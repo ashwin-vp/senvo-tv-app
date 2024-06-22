@@ -1,13 +1,93 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+		monospace;
+}
+
+.app-container {
+	padding: 20px;
+}
+
+.search-bar-container {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+
+.show-card {
+	/* position: relative; */
+	width: 20rem;
+	height: 40rem;
+	margin: 20px;
+}
+
+.show-card-image {
+	height: 20rem;
+	object-fit: contain !important;
+}
+
+.show-overview {
+	height: 18rem;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	padding: 1rem !important;
+}
+
+.show-card-actions {
+	/* position: absolute; */
+	bottom: 0;
+	padding: 0px !important;
+	justify-content: space-around;
+}
+
+.show-grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.episode-list {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.episode-list-item {
+	display: flex;
+	justify-content: space-between;
+}
+
+.show-stream > img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.show-details > div {
+	height: fit-content;
+}
+
+.show-network,
+.show-company {
+	height: 2rem;
+}
+
+.episode-image {
+	width: 25rem;
+}
+
+.home-top {
+	justify-content: space-around;
+	display: flex;
+}
+
+.episode-item {
+	display: flex;
+	flex-direction: column;
 }
