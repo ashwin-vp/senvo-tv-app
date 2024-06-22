@@ -76,6 +76,8 @@ code {
 .show-network,
 .show-company {
 	height: 2rem;
+	margin: 0.2rem;
+	text-align: center;
 }
 
 .episode-image {
@@ -90,4 +92,19 @@ code {
 .episode-item {
 	display: flex;
 	flex-direction: column;
+}
+
+div.MuiTabs-flexContainer[role="tablist"] {
+	justify-content: space-around;
+}
+
+.show-info > div {
+	line-height: 1.5rem;
+	padding-bottom: 0.8rem;
+	padding-top: 0.8rem;
+}
+
+.cast-crew-section {
+	overflow: scroll;
+	max-height: 25rem;
 }

@@ -1,26 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getTVShowDetails, getSeasonDetails } from "../utils/tmdb";
-import { TVShow, Episode, Season } from "../utils/tvShowTypes";
+import { getTVShowDetails, getSeasonDetails, getCredits } from "../utils/tmdb";
+import { TVShow, Episode, Season, CreditsData } from "../utils/tvShowTypes";
 import {
 	getWatchlist,
 	addToWatchlist,
 	removeFromWatchlist,
 } from "../utils/localStorage";
 import "../index.css";
-import { Button, Tabs, Tab, Box, CircularProgress } from "@mui/material";
+import {
+	Button,
+	Tabs,
+	Tab,
+	Box,
+	CircularProgress,
+	Tooltip,
+} from "@mui/material";
 import EpisodeList from "../components/EpisodeList";
+import Credits from "../components/Credits";
 
 const DetailedShowPage: React.FC = () => {
 	const { showId } = useParams<{ showId: string }>();
 	const [show, setShow] = useState<TVShow | null>(null);
 	const [seasons, setSeasons] = useState<Season[]>([]);
 	const [episodes, setEpisodes] = useState<{ [key: number]: Episode[] }>({});
-
+	const [credits, setCredits] = useState<CreditsData | null>(null);
 	const [watchlist, setWatchlist] = useState<number[]>(
 		getWatchlist().map((show) => show.id)
 	);
 	const [tabValue, setTabValue] = useState(-1);
+	const [seasonSummary, setSeasonSummary] = useState<String[]>([]);
 
 	useEffect(() => {
 		const fetchShowDetails = async () => {
@@ -28,6 +37,9 @@ const DetailedShowPage: React.FC = () => {
 				const details = await getTVShowDetails(parseInt(showId, 10));
 				setShow(details);
 				setSeasons(details.seasons);
+
+				const creditsData = await getCredits(parseInt(showId, 10));
+				setCredits(creditsData);
 			}
 		};
 
@@ -35,21 +47,31 @@ const DetailedShowPage: React.FC = () => {
 	}, [showId]);
 
 	const fetchSeasonDetails = async (seasonNumber: number) => {
-		if (showId) {
+		if (showId && !episodes[seasonNumber]) {
 			const seasonDetails = await getSeasonDetails(
 				parseInt(showId, 10),
 				seasonNumber
 			);
+
+			setSeasonSummary((prev) => ({
+				...prev,
+				[seasonNumber]: seasonDetails ? seasonDetails.overview : "",
+			}));
+
 			setEpisodes((prev) => ({
 				...prev,
-				[seasonNumber]: seasonDetails.episodes,
+				[seasonNumber]: seasonDetails ? seasonDetails.episodes : [],
 			}));
 		}
 	};
 
 	const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
 		setTabValue(newValue);
-		fetchSeasonDetails(newValue + 1);
+		if (show && show?.number_of_seasons === show?.seasons.length) {
+			fetchSeasonDetails(newValue + 1);
+		} else {
+			fetchSeasonDetails(newValue);
+		}
 	};
 
 	const handleAddToWatchlist = () => {
@@ -76,7 +98,15 @@ const DetailedShowPage: React.FC = () => {
 
 	return (
 		<div className="p-4 d-flex flex-column">
-			<div className="show-info row">
+			<div className="row">
+				<div className="col-md-12 flex-row d-inline-flex justify-content-center align-items-baseline">
+					<h1>{show.name}</h1>
+					<h2 className="show-date px-1">
+						{`(${show.first_air_date.split("-")[0]} - ${
+							show.in_production ? " Present" : show.last_air_date.split("-")[0]
+						})`}
+					</h2>
+				</div>
 				<div className="show-img col-md-4">
 					{show.poster_path ? (
 						<img
@@ -90,67 +120,50 @@ const DetailedShowPage: React.FC = () => {
 					)}
 				</div>
 				<div className="show-details col-md-8 ">
-					<div className="row">
-						<div className="show-header col-md-12 align-items-baseline d-flex">
-							<h1>{show.name}</h1>
-							<h2 className="show-date px-1">
-								{`(${show.first_air_date.split("-")[0]} - ${
-									show.in_production
-										? " Present"
-										: show.last_air_date.split("-")[0]
-								})`}
-							</h2>
-						</div>
+					<div className="row show-info">
+						<div className="show-header col-md-12 align-items-baseline d-flex"></div>
 						<div className="show-summary col-md-12">
 							<span>{show.overview}</span>
 						</div>
-						<div className="show-status col-md-6">
-							<span>Status : {show.status}</span>
+						<div className="show-status col-md-4 py-2">
+							<span>
+								<h4>Status</h4> <p>{show.status}</p>
+							</span>
 						</div>
-						<div className="show-ep-count col-md-6">
-							<span>Number of Episodes : {show.number_of_episodes}</span>
+						<div className="show-status col-md-4 py-2">
+							<span>
+								<h4>Seasons</h4> <p>{show.number_of_seasons}</p>
+							</span>
 						</div>
-						<div className="show-networks col-md-12 d-inline-flex">
-							<div className="stream-hd col-md-3">Streaming</div>
-							<div className="col-md-9 d-inline-flex flex-wrap">
-								{show.networks.map((network) => {
-									return (
-										<div key={network.id} className="show-network  col-md-4">
-											<span className="px-2">{network.name}</span>
-											<img
-												src={`https://image.tmdb.org/t/p/w500${network.logo_path}`}
-												alt={show.name}
-												width="auto"
-												height="100%"
-											/>
-										</div>
-									);
-								})}
-							</div>
-						</div>
-						<div className="show-production col-md-12 d-inline-flex">
-							<div className="stream-hd col-md-3">Prodcution</div>
-							<div className="col-md-9 d-inline-flex flex-wrap">
-								{show.production_companies.map((company) => {
-									return (
-										<div
-											key={company.id}
-											className="show-company show-stream  m-2"
-										>
-											{company.logo_path ? (
-												<img
-													src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}
-													alt={show.name}
-												/>
-											) : (
-												<h5 className="text-nowrap">{company.name}</h5>
-											)}
-										</div>
-									);
-								})}
-							</div>
+						<div className="show-ep-count col-md-4 py-2">
+							<span>
+								<h4>Number of Episodes</h4> <p>{show.number_of_episodes}</p>
+							</span>
 						</div>
 						<div className="col-md-12">
+							<h4>Streaming</h4>
+						</div>
+						<div className="show-networks col-md-12">
+							<div className="row">
+								{show.networks.map((network) => {
+									return (
+										<div key={network.id} className="show-network  col-md-3">
+											<Tooltip title={network.name} placement="top">
+												<img
+													src={`https://image.tmdb.org/t/p/w500${network.logo_path}`}
+													alt={show.name}
+													width="auto"
+													height="100%"
+												/>
+											</Tooltip>
+										</div>
+									);
+								})}
+							</div>
+						</div>
+
+						<Credits credits={credits} />
+						<div className="col-md-12 d-inline-flex justify-content-center">
 							{watchlist.includes(show.id) ? (
 								<Button onClick={handleRemoveFromWatchlist}>
 									Remove from Watchlist
@@ -162,6 +175,7 @@ const DetailedShowPage: React.FC = () => {
 					</div>
 				</div>
 			</div>
+
 			<Box sx={{ width: "100%", bgcolor: "background.paper" }}>
 				<Tabs
 					value={tabValue < 0 ? false : tabValue}
@@ -181,6 +195,9 @@ const DetailedShowPage: React.FC = () => {
 						/>
 					))}
 				</Tabs>
+				<div className="show-summary col-md-12">
+					<span>{seasonSummary[tabValue]}</span>
+				</div>
 				{seasons.map((season, index) => (
 					<div
 						role="tabpanel"

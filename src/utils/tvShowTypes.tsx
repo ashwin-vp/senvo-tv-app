@@ -58,38 +58,6 @@ export interface Genre {
 	name: string;
 }
 
-export interface Episode {
-	id: number;
-	overview: string;
-	name: string;
-	vote_average: number;
-	vote_count: number;
-	air_date: string;
-	episode_number: number;
-	episode_type: string;
-	production_code: string;
-	runtime: number;
-	season_number: number;
-	show_id: number;
-	still_path: string;
-}
-
-export interface NextEpisodeToAir {
-	id: number;
-	overview: string;
-	name: string;
-	vote_average: number;
-	vote_count: number;
-	air_date: string;
-	episode_number: number;
-	episode_type: string;
-	production_code: string;
-	runtime: any;
-	season_number: number;
-	show_id: number;
-	still_path: string;
-}
-
 export interface Network {
 	id: number;
 	logo_path: string;
@@ -124,4 +92,51 @@ export interface SpokenLanguage {
 	english_name: string;
 	iso_639_1: string;
 	name: string;
+}
+
+export interface CreditsData {
+	cast: CastMember[];
+	crew: CrewMember[];
+}
+
+export interface CastMember {
+	id: number;
+	name: string;
+	profile_path: string;
+	character: string;
+}
+
+export interface CrewMember {
+	id: number;
+	name: string;
+	profile_path: string;
+	job: string;
+}
+
+export interface SeasonDetails {
+	_id: string;
+	air_date: string;
+	episodes: Episode[];
+	name: string;
+	overview: string;
+	id: number;
+	poster_path: string;
+	season_number: number;
+	vote_average: number;
+}
+
+export interface Episode {
+	air_date: string;
+	episode_number: number;
+	episode_type: string;
+	id: number;
+	name: string;
+	overview: string;
+	production_code: string;
+	runtime: number;
+	season_number: number;
+	show_id: number;
+	still_path: string;
+	vote_average: number;
+	vote_count: number;
 }

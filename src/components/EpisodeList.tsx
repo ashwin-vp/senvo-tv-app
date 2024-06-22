@@ -46,7 +46,9 @@ const EpisodeList: React.FC<EpisodeListProps> = ({ episodes, showId }) => {
 								<ListItem
 									key={episode.id}
 									className={`row ${
-										watchedEpisodes.includes(episode.id) ? "bg-light" : ""
+										watchedEpisodes.includes(episode.id)
+											? "bg-light border border-2"
+											: ""
 									}`}
 								>
 									<img

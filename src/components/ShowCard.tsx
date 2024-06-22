@@ -19,7 +19,11 @@ const ShowCard: React.FC<ShowCardProps> = ({
 	onRemoveFromWatchlist,
 }) => {
 	return (
-		<Card className="show-card">
+		<Card
+			className={`show-card ${
+				onAddToWatchlist ? "" : "bg-light border border-2"
+			}`}
+		>
 			<CardMedia
 				className="show-card-image"
 				component="img"

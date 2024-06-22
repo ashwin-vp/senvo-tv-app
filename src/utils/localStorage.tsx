@@ -1,4 +1,4 @@
-import { TVShow, Episode } from "../utils/tvShowTypes";
+import { TVShow } from "../utils/tvShowTypes";
 
 const WATCHLIST_KEY = "watchlist";
 const WATCHED_EPISODES_KEY = "watchedEpisodes";
@@ -62,5 +62,5 @@ export const isEpisodeWatched = (
 	return watchedEpisodes.includes(episodeId);
 };
 
-export const isInWatchlist = (showId: number) =>
+export const isInWatchlist = (showId: number): boolean =>
 	getWatchlist().some((watchlistItem) => watchlistItem.id === showId);
