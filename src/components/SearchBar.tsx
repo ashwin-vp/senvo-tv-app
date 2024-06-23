@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button } from "@mui/material";
 
 interface SearchBarProps {
@@ -8,8 +8,19 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 	const [query, setQuery] = useState("");
 
+	useEffect(() => {
+		if (query.length < 1) {
+			onSearch(query);
+		}
+	}, [onSearch, query]);
+
 	const handleSearch = () => {
 		onSearch(query);
+	};
+	const handleKeyDown = (e: { key: string }) => {
+		if (e.key === "Enter") {
+			handleSearch();
+		}
 	};
 
 	return (
@@ -18,8 +29,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 				label="Search TV Show"
 				value={query}
 				onChange={(e) => setQuery(e.target.value)}
+				onKeyDown={handleKeyDown}
 			/>
-			<Button onClick={handleSearch}>Search</Button>
+			<Button className="h-100" onClick={handleSearch}>
+				Search
+			</Button>
 		</div>
 	);
 };

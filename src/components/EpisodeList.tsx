@@ -48,7 +48,7 @@ const EpisodeList: React.FC<EpisodeListProps> = ({ episodes, showId }) => {
 									className={`row ${
 										watchedEpisodes.includes(episode.id)
 											? "bg-light border border-2"
-											: ""
+											: " border border-1"
 									}`}
 								>
 									<img
@@ -62,10 +62,9 @@ const EpisodeList: React.FC<EpisodeListProps> = ({ episodes, showId }) => {
 										alt=""
 										height="auto"
 									/>
-
 									<ListItemText
 										className="col-md-5"
-										primary={`Episode ${episode.episode_number} : ${episode.name}`}
+										primary={`Episode ${episode.episode_number} : ${episode.name} `}
 										secondary={episode.overview}
 									/>
 

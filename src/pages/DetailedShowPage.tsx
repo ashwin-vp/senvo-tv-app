@@ -29,7 +29,6 @@ const DetailedShowPage: React.FC = () => {
 		getWatchlist().map((show) => show.id)
 	);
 	const [tabValue, setTabValue] = useState(-1);
-	const [seasonSummary, setSeasonSummary] = useState<String[]>([]);
 
 	useEffect(() => {
 		const fetchShowDetails = async () => {
@@ -52,11 +51,6 @@ const DetailedShowPage: React.FC = () => {
 				parseInt(showId, 10),
 				seasonNumber
 			);
-
-			setSeasonSummary((prev) => ({
-				...prev,
-				[seasonNumber]: seasonDetails ? seasonDetails.overview : "",
-			}));
 
 			setEpisodes((prev) => ({
 				...prev,
@@ -98,7 +92,7 @@ const DetailedShowPage: React.FC = () => {
 
 	return (
 		<div className="p-4 d-flex flex-column">
-			<div className="row">
+			<div className="row show-intro px-2">
 				<div className="col-md-12 flex-row d-inline-flex justify-content-center align-items-baseline">
 					<h1>{show.name}</h1>
 					<h2 className="show-date px-1">
@@ -107,7 +101,7 @@ const DetailedShowPage: React.FC = () => {
 						})`}
 					</h2>
 				</div>
-				<div className="show-img col-md-4">
+				<div className="show-img col-md-4 p-0">
 					{show.poster_path ? (
 						<img
 							src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}
@@ -176,12 +170,15 @@ const DetailedShowPage: React.FC = () => {
 				</div>
 			</div>
 
-			<Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+			<Box
+				className="show-season-episodes"
+				sx={{ width: "100%", bgcolor: "background.paper" }}
+			>
 				<Tabs
 					value={tabValue < 0 ? false : tabValue}
 					onChange={handleTabChange}
 					variant="scrollable"
-					className="season-tabs"
+					className="season-tabs bg-light"
 				>
 					{seasons.map((season, index) => (
 						<Tab
@@ -195,27 +192,32 @@ const DetailedShowPage: React.FC = () => {
 						/>
 					))}
 				</Tabs>
-				<div className="show-summary col-md-12">
-					<span>{seasonSummary[tabValue]}</span>
-				</div>
-				{seasons.map((season, index) => (
+				{seasons[tabValue] && (
 					<div
 						role="tabpanel"
-						hidden={tabValue !== index}
-						id={`tabpanel-${index}`}
-						aria-labelledby={`tab-${index}`}
-						key={season.id}
+						id={`tabpanel-${tabValue}`}
+						aria-labelledby={`tab-${tabValue}`}
+						key={seasons[tabValue].id}
 					>
-						{tabValue === index && (
+						<>
+							{seasons[tabValue].overview ? (
+								<div className="show-summary col-md-12 p-3">
+									<h4>Summary</h4>
+									<span>{seasons[tabValue].overview}</span>
+								</div>
+							) : (
+								""
+							)}
+
 							<Box p={3}>
 								<EpisodeList
-									episodes={episodes[season.season_number] || []}
+									episodes={episodes[seasons[tabValue].season_number] || []}
 									showId={Number(showId)}
 								/>
 							</Box>
-						)}
+						</>
 					</div>
-				))}
+				)}
 			</Box>
 		</div>
 	);

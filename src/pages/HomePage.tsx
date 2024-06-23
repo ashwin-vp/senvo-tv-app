@@ -15,6 +15,7 @@ const HomePage: React.FC = () => {
 	const [shows, setShows] = useState<TVShow[]>([]);
 	const [upcomingShows, setUpcomingShows] = useState<TVShow[]>([]);
 	const [watchlist, setWatchlist] = useState<TVShow[]>(getWatchlist());
+	const [query, setQuery] = useState<String>("");
 
 	useEffect(() => {
 		const fetchUpcomingEpisodes = async () => {
@@ -46,6 +47,7 @@ const HomePage: React.FC = () => {
 	}, []);
 
 	const handleSearch = async (query: string) => {
+		setQuery(query);
 		if (!query.length) {
 			setShows(upcomingShows);
 		} else {
@@ -72,18 +74,22 @@ const HomePage: React.FC = () => {
 			</div>
 
 			<div className="show-grid">
-				{shows.map((show) => (
-					<ShowCard
-						key={show.id}
-						show={show}
-						onAddToWatchlist={
-							!isInWatchlist(show.id) ? handleAddToWatchlist : undefined
-						}
-						onRemoveFromWatchlist={
-							isInWatchlist(show.id) ? handleRemoveFromWatchlist : undefined
-						}
-					/>
-				))}
+				{shows.length ? (
+					shows.map((show) => (
+						<ShowCard
+							key={show.id}
+							show={show}
+							onAddToWatchlist={
+								!isInWatchlist(show.id) ? handleAddToWatchlist : undefined
+							}
+							onRemoveFromWatchlist={
+								isInWatchlist(show.id) ? handleRemoveFromWatchlist : undefined
+							}
+						/>
+					))
+				) : (
+					<p>{query.length ? `No Results` : `Add shows to your watchlish`}</p>
+				)}
 			</div>
 		</div>
 	);

@@ -6,6 +6,7 @@ import {
 	Typography,
 	CardActions,
 	Button,
+	Box,
 } from "@mui/material";
 import { ShowCardProps } from "../utils/tvShowTypes";
 import { Link } from "react-router-dom";
@@ -35,10 +36,19 @@ const ShowCard: React.FC<ShowCardProps> = ({
 				alt={show.name}
 			/>
 			<CardContent className="show-overview">
-				<Typography variant="h6">{show.name}</Typography>
-				<Typography variant="body2" color="textSecondary">
-					{show.overview}
-				</Typography>
+				<Box display="flex" flexDirection="column" height="100%">
+					<Typography variant="h6" display="block">
+						{show.name}
+					</Typography>
+					<Typography
+						variant="body2"
+						color="textSecondary"
+						overflow="auto"
+						flexGrow={1}
+					>
+						{show.overview}
+					</Typography>
+				</Box>
 			</CardContent>
 			<CardActions className="show-card-actions">
 				<Button component={Link} to={`/show/${show.id}`}>

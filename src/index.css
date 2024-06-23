@@ -94,9 +94,9 @@ code {
 	flex-direction: column;
 }
 
-div.MuiTabs-flexContainer[role="tablist"] {
+/* div.MuiTabs-flexContainer[role="tablist"] {
 	justify-content: space-around;
-}
+} */
 
 .show-info > div {
 	line-height: 1.5rem;
@@ -107,4 +107,14 @@ div.MuiTabs-flexContainer[role="tablist"] {
 .cast-crew-section {
 	overflow: scroll;
 	max-height: 25rem;
+}
+.show-intro > div,
+.show-episodes > div {
+	border-width: 1px;
+	border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+}
+
+.show-season-episodes > div {
+	padding-left: 0;
+	padding-right: 0;
 }
