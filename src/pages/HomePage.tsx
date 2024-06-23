@@ -88,7 +88,13 @@ const HomePage: React.FC = () => {
 						/>
 					))
 				) : (
-					<p>{query.length ? `No Results` : `Add shows to your watchlish`}</p>
+					<p>
+						{query.length
+							? `No Results`
+							: watchlist.length
+							? `No Upcoming Episodes in 7 days from the shows in your watchlist`
+							: `Add shows to your watchlish`}
+					</p>
 				)}
 			</div>
 		</div>
