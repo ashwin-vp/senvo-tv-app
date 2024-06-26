@@ -69,6 +69,10 @@ code {
 	max-height: 100%;
 }
 
+.show-status {
+	padding: 0;
+}
+
 .show-details > div {
 	height: fit-content;
 }
@@ -106,12 +110,22 @@ code {
 
 .cast-crew-section {
 	overflow: scroll;
-	max-height: 25rem;
+	max-height: 13.5rem;
 }
 .show-intro > div,
 .show-episodes > div {
 	border-width: 1px;
 	border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+}
+
+.show-intro h4 {
+	background-color: #0000000f;
+	padding: 0.5rem;
+	text-align: center;
+}
+.show-intro p {
+	padding: 0.1rem;
+	text-align: center;
 }
 
 .show-season-episodes > div {

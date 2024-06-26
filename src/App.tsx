@@ -11,10 +11,10 @@ const App: React.FC = () => {
 		<Router>
 			<Header />
 			<Routes>
-				<Route path="/" element={<HomePage />} />
 				<Route path="/watchlist" element={<WatchlistPage />} />
 				<Route path="/show/:showId" element={<DetailedShowPage />} />
 				<Route path="/popular" element={<PopularPage />} />
+				<Route path="/*" element={<HomePage />} />
 			</Routes>
 		</Router>
 	);

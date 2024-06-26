@@ -15,55 +15,65 @@ const Credits: React.FC<CreditsProps> = ({ credits }) => {
 	}
 
 	return (
-		<div className="row cast-crew-section">
-			<div className="col-md-12">
-				<h4>Cast</h4>
+		<>
+			<h4>Cast</h4>
+			<div className="row cast-crew-section">
+				<Box display="flex" flexWrap="wrap" justifyContent="space-around">
+					{credits.cast.map((castMember) => (
+						<Box
+							key={castMember.character + " - " + castMember.id}
+							p={1}
+							textAlign="center"
+							style={{ maxWidth: "40%" }}
+						>
+							<img
+								src={
+									castMember.profile_path
+										? `https://image.tmdb.org/t/p/w500${castMember.profile_path}`
+										: NoImage
+								}
+								alt={castMember.name}
+								width="100px"
+								height="auto"
+								style={{ borderRadius: "50%", objectFit: "cover" }}
+							/>
+							<Typography variant="body1">{castMember.name}</Typography>
+							<Typography variant="body2">{castMember.character}</Typography>
+						</Box>
+					))}
+				</Box>
 			</div>
-			{credits.cast.map((castMember) => (
-				<div className="col-md-3" key={"cast " + castMember.id}>
-					<img
-						src={
-							castMember.profile_path
-								? `https://image.tmdb.org/t/p/w500${castMember.profile_path}`
-								: NoImage
-						}
-						alt={castMember.name}
-						width="100px"
-						height="auto"
-						style={{ borderRadius: "50%" }}
-					/>
-					<Typography variant="body1">{castMember.name}</Typography>
-					<Typography variant="body2">{castMember.character}</Typography>
-				</div>
-			))}
-			<Typography variant="h4" mt={4}>
-				Crew
-			</Typography>
-			<Box display="flex" flexWrap="wrap">
-				{credits.crew.map((crewMember) => (
-					<Box
-						key={crewMember.job + " - " + crewMember.id}
-						p={1}
-						textAlign="center"
-					>
-						<img
-							src={
-								crewMember.profile_path
-									? `https://image.tmdb.org/t/p/w500${crewMember.profile_path}`
-									: NoImage
-							}
-							alt={crewMember.name}
-							width="100px"
-							height="auto"
-							style={{ borderRadius: "50%" }}
-						/>
+			<>
+				<h4>Crew</h4>
+				<div className="row cast-crew-section">
+					<Box display="flex" flexWrap="wrap" justifyContent="space-around">
+						{credits.crew.map((crewMember) => (
+							<Box
+								key={crewMember.job + " - " + crewMember.id}
+								p={1}
+								textAlign="center"
+								style={{ maxWidth: "40%" }}
+							>
+								<img
+									src={
+										crewMember.profile_path
+											? `https://image.tmdb.org/t/p/w500${crewMember.profile_path}`
+											: NoImage
+									}
+									alt={crewMember.name}
+									width="100px"
+									height="150px"
+									style={{ borderRadius: "50%", objectFit: "cover" }}
+								/>
 
-						<Typography variant="body1">{crewMember.name}</Typography>
-						<Typography variant="body2">{crewMember.job}</Typography>
+								<Typography variant="body1">{crewMember.name}</Typography>
+								<Typography variant="body2">{crewMember.job}</Typography>
+							</Box>
+						))}
 					</Box>
-				))}
-			</Box>
-		</div>
+				</div>
+			</>
+		</>
 	);
 };
 

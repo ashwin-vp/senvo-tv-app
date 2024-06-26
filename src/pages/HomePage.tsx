@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
 
 			for (const show of watchlist) {
 				const showDetails = await getTVShowDetails(show.id);
-				const nextEpisode = showDetails.next_episode_to_air;
+				const nextEpisode = showDetails?.next_episode_to_air;
 
 				if (nextEpisode) {
 					const airDate = dayjs(nextEpisode.air_date);
@@ -35,7 +35,6 @@ const HomePage: React.FC = () => {
 						airDate.isBefore(dayjs().add(7, "day"))
 					) {
 						upcomingEpisodes.push(showDetails);
-						// upcomingEpisodes.push(nextEpisode);
 					}
 				}
 			}

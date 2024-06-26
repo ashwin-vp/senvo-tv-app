@@ -35,8 +35,7 @@ const DetailedShowPage: React.FC = () => {
 			if (showId) {
 				const details = await getTVShowDetails(parseInt(showId, 10));
 				setShow(details);
-				setSeasons(details.seasons);
-
+				setSeasons(details ? details.seasons : []);
 				const creditsData = await getCredits(parseInt(showId, 10));
 				setCredits(creditsData);
 			}
@@ -115,7 +114,6 @@ const DetailedShowPage: React.FC = () => {
 				</div>
 				<div className="show-details col-md-8 ">
 					<div className="row show-info">
-						<div className="show-header col-md-12 align-items-baseline d-flex"></div>
 						<div className="show-summary col-md-12">
 							<span>{show.overview}</span>
 						</div>
@@ -129,12 +127,12 @@ const DetailedShowPage: React.FC = () => {
 								<h4>Seasons</h4> <p>{show.number_of_seasons}</p>
 							</span>
 						</div>
-						<div className="show-ep-count col-md-4 py-2">
+						<div className="show-status col-md-4 py-2">
 							<span>
 								<h4>Number of Episodes</h4> <p>{show.number_of_episodes}</p>
 							</span>
 						</div>
-						<div className="col-md-12">
+						<div className="show-status col-md-12 ">
 							<h4>Streaming</h4>
 						</div>
 						<div className="show-networks col-md-12">
@@ -157,13 +155,18 @@ const DetailedShowPage: React.FC = () => {
 						</div>
 
 						<Credits credits={credits} />
-						<div className="col-md-12 d-inline-flex justify-content-center">
+						<div className="col-md-12 d-inline-flex justify-content-center p-0 border border-2">
 							{watchlist.includes(show.id) ? (
-								<Button onClick={handleRemoveFromWatchlist}>
+								<Button
+									onClick={handleRemoveFromWatchlist}
+									className="w-100 py-3  text-danger"
+								>
 									Remove from Watchlist
 								</Button>
 							) : (
-								<Button onClick={handleAddToWatchlist}>Add to Watchlist</Button>
+								<Button onClick={handleAddToWatchlist} className="w-100 py-3">
+									Add to Watchlist
+								</Button>
 							)}
 						</div>
 					</div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TextField, Button } from "@mui/material";
+import { TextField } from "@mui/material";
 
 interface SearchBarProps {
 	onSearch: (query: string) => void;
@@ -31,9 +31,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 				onChange={(e) => setQuery(e.target.value)}
 				onKeyDown={handleKeyDown}
 			/>
-			<Button className="h-100" onClick={handleSearch}>
-				Search
-			</Button>
 		</div>
 	);
 };
